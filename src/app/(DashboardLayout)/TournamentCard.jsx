@@ -16,7 +16,7 @@ const TournamentCard = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
         <div className="absolute bottom-2 left-3 text-white">
           <p className="text-xs sm:text-sm font-medium text-gray-400">SEP 10 Starting at 12:00 AM</p>
-        <Link href={"tournament/2"}>  <h2 className="text-sm sm:text-base md:text-lg font-bold leading-tight">Valorant Championship</h2></Link> 
+        <Link href={"dashboards/tournament/2"}>  <h2 className="text-sm sm:text-base md:text-lg font-bold leading-tight">Valorant Championship</h2></Link> 
         </div>
       </div>
       

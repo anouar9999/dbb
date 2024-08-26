@@ -1,6 +1,7 @@
 import React from 'react';
 import TournamentCard from './TournamentCard';
 import { Hexagon, Zap, Coins, Users } from 'lucide-react';
+import Link from 'next/link';
 
 
 
@@ -29,18 +30,19 @@ const EsportsTournamentCreator = () => {
           </p>
           <div className="mb-4">
             <div className="text-sm text-gray-200 mb-2">
-              <span className="font-semibold text-blue-400">✓</span> Multi-game support
+              <span className="font-semibold text-[#ff4700]">✓</span> Multi-game support
             </div>
             <div className="text-sm text-gray-200 mb-2">
-              <span className="font-semibold text-blue-400">✓</span> Real-time match tracking
+              <span className="font-semibold text-[#ff4700]">✓</span> Real-time match tracking
             </div>
             <div className="text-sm text-gray-200">
-              <span className="font-semibold text-blue-400">✓</span> Automated bracket generation
+              <span className="font-semibold text-[#ff4700]">✓</span> Automated bracket generation
             </div>
           </div>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded transition duration-300">
+          {/* <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded transition duration-300">
             Start Tournament
-          </button>
+          </button> */}
+          <CustomButton title={'     Start Tournament'} />
         </div>
         <div className="md:w-1/2 mt-6 md:mt-0">
           {/* This space is intentionally left empty to showcase the background image */}
@@ -51,6 +53,29 @@ const EsportsTournamentCreator = () => {
 };
 
 
+const CustomButton = ({ title, icon: Icon }) => {
+  return (
+    <Link href={'/dashboards/new-tournament'} >
+    <div className="relative inline-block">
+      <svg
+        width="160"
+        height="40"
+        viewBox="0 0 160 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9.6 0H139.2C144.8 0 149.6 1.25 152.8 3.75L160 9.375V34.375C160 37.5 156.8 40 152.8 40H20.8C15.2 40 10.4 38.75 7.2 36.25L0 30.625V5.625C0 2.5 3.2 0 7.2 0H9.6Z"
+          fill="#ff4700"
+        />
+      </svg>
+      <button className="absolute inset-0 flex items-center justify-center text-white text-sm font-semibold">
+        <span>{title}</span>
+      </button>
+    </div>
+    </Link>
+  );
+};
 
 const GameCard = ({ imageUrl, title }) => (
   <div className="relative overflow-hidden rounded-xl">
