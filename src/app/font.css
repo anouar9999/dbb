@@ -8,7 +8,7 @@
   /* If you have different weights or styles, add them like this: */
   @font-face {
     font-family: 'nightWarrior2';
-    src: url('./KnightWarrior-w16n8.otf') format('opentype');
+    src: url('./OnestMedium1602-hint.ttf') format('opentype');
     font-weight: normal;
     font-style: normal;
   }

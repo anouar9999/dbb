@@ -1,36 +1,8 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Trophy } from 'lucide-react';
+import { Share2, Trophy } from 'lucide-react';
 import { Dialog } from '@headlessui/react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-
-
-
-const PlayerEntry = ({ name, avatar, status }) => (
-  <motion.div 
-    className="flex items-center justify-center space-x-2 bg-gray-800 bg-opacity-50 p-2 rounded-lg angular-cut max-w-[300px] mx-auto"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3 }}
-    whileHover={{ scale: 1.05 }}
-  >
-    <div className="w-8 h-8 overflow-hidden flex-shrink-0">
-      <img src={avatar} alt={name} className="w-full h-full object-cover clip-polygon2" />
-    </div>
-    <div className="flex-grow min-w-0">
-      <p className="text-white font-semibold text-sm truncate">{name}</p>
-      <p className={`text-[10px] truncate ${
-        status === 'Ready' ? 'text-green-400' :
-        status === 'In Game' ? 'text-blue-400' :
-        status === 'Away' ? 'text-yellow-400' :
-        'text-gray-400'
-      }`}>{status}</p>
-    </div>
-  </motion.div>
-);
-
-
 
 const ScoreInputDialog = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
   const [scoreA, setScoreA] = useState('');
@@ -84,9 +56,7 @@ const ScoreInputDialog = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
                       animate={winner === team ? { scale: 1.05 } : { scale: 1 }}
                     >
                       <div className="relative inline-block">
-                        <div className="w-24 h-24 bg-gray-700 rounded-lg flex items-center justify-center angular-cut">
-                          <img src={data.logo} alt={data.name} className="w-20 h-20 object-contain" />
-                        </div>
+                          <img src={data.logo} alt={data.name} className="w-20 h-20 object-contain rounded-[1.5rem]" />
                         <AnimatePresence>
                           {winner === team && (
                             <motion.div 
@@ -128,7 +98,7 @@ const ScoreInputDialog = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
               <div className="mt-8 flex justify-center">
                 <motion.button
                   onClick={handleSave}
-                  className="px-8 py-3 bg-orange-500 text-white hover:bg-orange-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-orange-300 angular-cut-button"
+                  className="px-8 py-3 bg-orange-500 text-white font-semibold hover:bg-orange-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-orange-300 angular-cut-button"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -143,16 +113,120 @@ const ScoreInputDialog = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
   );
 };
 
-const LeagueLobbyInterface = () => {
-  const [timeLeft, setTimeLeft] = useState(3600);
+
+const MatchDetailsPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [scores, setScores] = useState({ teamA: 0, teamB: 0 });
+
+  const handleSaveScores = (scoreA, scoreB) => {
+    setScores({ teamA: scoreA, teamB: scoreB });
+  };
+
+  const teamA = {
+    name: 'TEAM LIQUID PRO',
+    logo: 'https://img.freepik.com/vecteurs-libre/modele-logo-tigre-sport_23-2148005750.jpg?t=st=1724771924~exp=1724775524~hmac=02a693feea337b8be0c78772cf8397a56bb76e621bca9373bf2f2e2abc39a191&w=740',
+    players: ['MAYHODO', 'BOOST_SMASH', 'HEAX', 'JUSTINE']
+  };
+
+  const teamB = {
+    name: 'FRANCISCO SHOCK',
+    logo: 'https://img.freepik.com/vecteurs-premium/embleme-plage-logo-vector-design-graphique-palmier_593008-173.jpg?w=740',
+    players: ['ZAGIA', 'PIQUE', 'HEYHOOOOOOOO', 'GOVAAAA']
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Header (kept from your existing code) */}
+        <header className="text-center mb-8">
+          <img src="/images/backgrounds/LOL_Logo_Rendered_Hi-Res_onblue-4x3-removebg-preview.png" alt="" className='w-1/6 m-auto' />
+          <p className="text-2xl">Long night run all day</p>
+          <p className="text-sm text-gray-400">Should be finished in 2 days from now</p>
+        </header>
+<TeamComparisonSection/>
+<PlayerListConnection/>
+      
+      </div>
+
+      {/* ScoreInputDialog component (kept from your existing code) */}
+      <ScoreInputDialog
+        isOpen={isDialogOpen}
+        closeDialog={() => setIsDialogOpen(false)}
+        onSave={handleSaveScores}
+        teamA={teamA}
+        teamB={teamB}
+      />
+
+      {/* Styles (kept from your existing code) */}
+      <style jsx global>{`
+        .angular-cut {
+          clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+        }
+        .angular-cut-button {
+          clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default MatchDetailsPage;
+
+const TeamComparisonSection = () => {
+  return (
+    <div className=" text-white py-8 px-12 flex items-center justify-center mx-auto rounded-lg shadow-lg space-x-16">
+      {/* Team A */}
+      <div className="flex flex-col items-end text-left">
+        <span className="text-xs font-semibold text-gray-400 tracking-wide text-right">TEAM A</span>
+        <span className="text-xl font-bold">FORESTYFOX</span>
+     
+      </div>
+      <img 
+          src="https://img.freepik.com/vecteurs-premium/conception-du-logo-du-bar-sportif_339976-60551.jpg?w=740" 
+          alt="FORESTYFOX logo" 
+          className="w-14 h-14  rounded-[1.2rem]"
+        />
+      {/* VS */}
+      <div className="text-4xl font-extrabold text-white">VS</div>
+      <img 
+          src="https://img.freepik.com/vecteurs-premium/graphique-insigne-embleme-logo-ligue-sportive-champion-lettre-etoile_15602-1477.jpg?w=740" 
+          alt="RABBITS RUSH logo" 
+          className="w-14 h-14 rounded-[1.2rem]"
+        />
+      {/* Team B */}
+      <div className="flex flex-col items-start text-left">
+        <span className="text-xs font-semibold text-gray-400 tracking-wide ">TEAM B</span>
+        <span className="text-xl font-bold">RABBITS RUSH</span>
+      
+      </div>
+    </div>
+  );
+};
+
+
+
+
+
+
+
+
+const PlayerCard = ({ name, avatar, status }) => (
+  <div className="bg-gray-800 rounded-lg p-3 flex items-center mb-2 angular-cut">
+    <img src={avatar} style={{clipPath:'polygon(50% 0, 100% 20%, 100% 80%, 50% 100%, 50% 100%, 0 80%, 0 20%)'}} alt={name} className="w-10 h-10 rounded-[0.8rem] mr-3" />
+    <div>
+      <p className="font-semibold text-white">{name}</p>
+      <p className="text-xs text-gray-400">{status}</p>
+    </div>
+  </div>
+);
+
+const PlayerListConnection = () => {
+  const [timeLeft, setTimeLeft] = useState(35 * 60 + 43); // 35:43 in seconds
 
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
@@ -162,233 +236,39 @@ const LeagueLobbyInterface = () => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const handleSaveScores = (scoreA, scoreB) => {
-    setScores({ teamA: scoreA, teamB: scoreB });
-    console.log("Scores saved:", { FORESTYFOX: scoreA, RABBITS_RUSH: scoreB });
-  };
+  const teamA = [
+    { name: 'MAYHODO', avatar: 'https://img.freepik.com/psd-gratuit/illustration-3d-avatar-ligne_23-2151303097.jpg?t=st=1725379973~exp=1725383573~hmac=1f36f61a7ed7ab4d2ed7a0a9276cb17f7bf7eb3702e7ab5dbfc4fb771082e753&w=740', status: 'Connected' },
+    { name: 'BOOST_SMASH', avatar: 'https://img.freepik.com/photos-premium/hommes-3d-icone-dessin-anime-logo-mode-arriere-plan-pour-pensee-creative_762678-9508.jpg?w=740', status: 'Connected' },
+    { name: 'HEAX', avatar: 'https://img.freepik.com/photos-premium/pose-personnage-animation-personnage-dessin-anime-3d_762678-8192.jpg?w=740', status: 'Connected' },
+    { name: 'JUSTINE', avatar: 'https://img.freepik.com/photos-premium/hommes-3d-icone-dessin-anime-logo-mode-arriere-plan-pour-pensee-creative_762678-9666.jpg?w=740', status: 'Connected' },
+  ];
 
-  const teamA = {
-    name: 'FORESTYFOX',
-    logo: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp',
-    players: [
-      { name: 'MAYHOOO', avatar: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp', status: 'Ready' },
-      { name: 'BOOST_DM801', avatar: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp', status: 'In Game' },
-      { name: 'HEAX', avatar: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp', status: 'Away' },
-      { name: 'JUSTINE', avatar: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp', status: 'Ready' },
-    ]
-  };
-
-  const teamB = {
-    name: 'RABBITS RUSH',
-    logo: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp',
-    players: [
-      { name: 'ZADIA', avatar: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp', status: 'Ready' },
-      { name: 'PIQUIE', avatar: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp', status: 'Ready' },
-      { name: 'HEYHOOOOOOOO', avatar: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp', status: 'In Game' },
-      { name: 'GOVAAAA', avatar: 'https://www.thedivinetech.com/uploads/v2/gaming-avatar/portfolio/1000/gaming-avatar-designs(12).webp', status: 'Away' },
-    ]
-  };
+  const teamB = [
+    { name: 'ZAGIA', avatar: 'https://img.freepik.com/photos-premium/avatar-pour-entreprise-ressources_1254967-6696.jpg?w=740', status: 'Connected' },
+    { name: 'PIQUE', avatar: 'https://img.freepik.com/photos-premium/personnage-dessin-anime-avatar-3d_113255-94227.jpg?w=740', status: 'Connected' },
+    { name: 'HEYHOOOOOOOO', avatar: 'https://img.freepik.com/psd-gratuit/illustration-3d-avatar-ligne_23-2151303085.jpg?t=st=1725380145~exp=1725383745~hmac=ee3189891cfecff8828cb31fbcdc9282beff3309d9a4710815e2c57964255bda&w=740', status: 'Connected' },
+    { name: 'GOVAAAA', avatar: 'https://img.freepik.com/photos-premium/gros-plan-personnage-dessin-anime-chemise-qui-dit_869640-244518.jpg?w=740', status: 'Connected' },
+  ];
 
   return (
-    <div className="min-h-screen text-white">
-      <style jsx global>{`
-        .angular-cut {
-          position: relative;
-          clip-path: polygon(
-            0 0,
-            calc(100% - 10px) 0,
-            100% 10px,
-            100% 100%,
-            10px 100%,
-            0 calc(100% - 10px)
-          );
-        }
-        .angular-cut::before,
-        .angular-cut::after {
-          content: '';
-          position: absolute;
-          background-color: #374151; /* Tailwind's gray-700, adjust as needed */
-        }
-        .angular-cut::before {
-          top: 0;
-          right: 0;
-          width: 2px;
-          height: 10px;
-          transform: skew(-45deg);
-          transform-origin: top right;
-        }
-        .angular-cut::after {
-          bottom: 0;
-          left: 0;
-          width: 10px;
-          height: 2px;
-          transform: skew(-45deg);
-          transform-origin: bottom left;
-        }
-        .angular-cut-button {
-          position: relative;
-          clip-path: polygon(
-            0 0,
-            calc(100% - 10px) 0,
-            100% 10px,
-            100% 100%,
-            10px 100%,
-            0 calc(100% - 10px)
-          );
-        }
-        .angular-cut-button::before,
-        .angular-cut-button::after {
-          content: '';
-          position: absolute;
-          background-color: #78350f; /* Tailwind's orange-900, for a darker border */
-        }
-        .angular-cut-button::before {
-          top: 0;
-          right: 0;
-          width: 2px;
-          height: 10px;
-          transform: skew(-45deg);
-          transform-origin: top right;
-        }
-        .angular-cut-button::after {
-          bottom: 0;
-          left: 0;
-          width: 10px;
-          height: 2px;
-          transform: skew(-45deg);
-          transform-origin: bottom left;
-        }
-        
-        .clip-polygon {
-          clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);}
-
-
-        .clip-polygon2 {
-          clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);}      `}</style>
-      <div className="mx-auto">
-        <motion.div 
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-           <img src="/images/backgrounds/LOL_Logo_Rendered_Hi-Res_onblue-4x3-removebg-preview.png" alt="" srcset="" className='w-24  m-auto' />
-
-          <h2 className="text-xl mb-1">Long night run all day</h2>
-          <p className="text-gray-400">Should be finished in 2 days from now</p>
-        </motion.div>
-
-        <motion.div 
-          className="flex justify-center items-center space-x-8 mb-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="text-center flex items-center space-x-4">
-            <div>
-              <p className="font-semibold text-sm text-gray-400 text-right">TEAM A</p>
-              <p className="font-semibold text-lg text-right">{teamA.name}</p>
-            </div>
-            <motion.div 
-              className="w-20 h-20  rounded-lg flex items-center justify-center angular-cut"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <img src={teamA.logo} alt={teamA.name} className="w-16 h-16 object-contain clip-polygon2 " />
-            </motion.div>
-           <motion.span 
-             className="font-semibold text-2xl text-left"
-             key={scores.teamA}
-             initial={{ scale: 1.5, opacity: 0 }}
-             animate={{ scale: 1, opacity: 1 }}
-             transition={{ type: "spring", stiffness: 300, damping: 10 }}
-           >
-             {scores.teamA}
-           </motion.span> 
-          </div>
-          <div className="w-20 h-20 flex items-center justify-center">
-            <motion.button 
-              onClick={() => setIsDialogOpen(true)}  
-              className="text-white font-bold text-2xl hover:text-orange-400"
-              whileHover={{ scale: 1.2, }}
-              transition={{ type: "spring", stiffness: 300, damping: 10 }}
-            >
-              VS
-            </motion.button>
-          </div>
-          <div className="text-center flex items-center space-x-4">
-            <motion.span 
-              className="font-semibold text-2xl text-left"
-              key={scores.teamB}
-              initial={{ scale: 1.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 10 }}
-            >
-              {scores.teamB}
-            </motion.span>  
-            <motion.div 
-              className="w-16 h-16  rounded-lg flex items-center justify-center angular-cut"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <img src={teamB.logo} alt={teamB.name} className="w-16 h-16 object-contain clip-polygon2 " />
-            </motion.div>
-            <div>
-              <p className="font-semibold text-sm text-gray-400 text-left">TEAM B</p>
-              <p className="font-semibold text-lg text-left">{teamB.name}</p>
-            </div>
-          </div>
-          </motion.div>
-
-        <div className="flex justify-around items-center">
-          <motion.div 
-            className="w-1/3 space-y-4"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            {teamA.players.map((player, index) => (
-              <PlayerEntry key={index} {...player} />
-            ))}
-          </motion.div>
-          
-          {/* <motion.div 
-            className="w-1/4 flex flex-col items-center justify-center space-y-2 m-4"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <motion.p 
-              className="text-red-500"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              Time left to connect: {formatTime(timeLeft)}
-            </motion.p>
-          </motion.div> */}
-          
-          <motion.div 
-            className="w-1/3 space-y-4 items-end"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            {teamB.players.map((player, index) => (
-              <PlayerEntry key={index} {...player} />
-            ))}
-          </motion.div>
-        </div>
+    <div className="bg-gray-900 p-6 flex justify-between">
+      <div className="w-1/3">
+        {teamA.map((player, index) => (
+          <PlayerCard key={index} {...player} />
+        ))}
       </div>
-
-      <ScoreInputDialog
-        isOpen={isDialogOpen}
-        closeDialog={() => setIsDialogOpen(false)}
-        onSave={handleSaveScores}
-        teamA={teamA}
-        teamB={teamB}
-      />
+      <div className="w-1/3 flex flex-col items-center justify-center">
+        <button className="bg-orange-500 text-white font-bold py-3 px-6 rounded-lg mb-4 hover:bg-orange-600 transition duration-300">
+          CONNECT TO THE GAME SERVER
+        </button>
+        <p className="text-gray-400 text-sm">Time left to connect: {formatTime(timeLeft)}</p>
+      </div>
+      <div className="w-1/3">
+        {teamB.map((player, index) => (
+          <PlayerCard key={index} {...player} />
+        ))}
+      </div>
     </div>
   );
 };
 
-export default LeagueLobbyInterface;

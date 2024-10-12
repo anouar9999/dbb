@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
-
+:root {
+   --toastify-color-light: #fff;
+   --toastify-color-dark: #080312;}
 .btn {
     --bg: #080312;
     --color: #afffff;
@@ -483,4 +485,70 @@
      fill: white;
    }
  }
- 
+
+   .angular-cut {
+     position: relative;
+     clip-path: polygon(
+       0 0,
+       calc(100% - 10px) 0,
+       100% 10px,
+       100% 100%,
+       10px 100%,
+       0 calc(100% - 10px)
+     );
+   }
+   .angular-cut::before,
+   .angular-cut::after {
+     content: '';
+     position: absolute;
+     background-color: #374151;
+   }
+   .angular-cut::before {
+     top: 0;
+     right: 0;
+     width: 0px;
+     height: 0px;
+     transform: skew(-45deg);
+     transform-origin: top right;
+   }
+   .angular-cut::after {
+     bottom: 0;
+     left: 0;
+     width: 0px;
+     height: 0px;
+     transform: skew(-45deg);
+     transform-origin: bottom left;
+   }
+   .angular-cut-button {
+     position: relative;
+     clip-path: polygon(
+       0 0,
+       calc(100% - 10px) 0,
+       100% 10px,
+       100% 100%,
+       10px 100%,
+       0 calc(100% - 10px)
+     );
+   }
+   .angular-cut-button::before,
+   .angular-cut-button::after {
+     content: '';
+     position: absolute;
+     background-color: #78350f;
+   }
+   .angular-cut-button::before {
+     top: 0;
+     right: 0;
+     width: 0px;
+     height: 10px;
+     transform: skew(-45deg);
+     transform-origin: top right;
+   }
+   .angular-cut-button::after {
+     bottom: 0;
+     left: 0;
+     width: 0px;
+     height: 0px;
+     transform: skew(-45deg);
+     transform-origin: bottom left;
+   }

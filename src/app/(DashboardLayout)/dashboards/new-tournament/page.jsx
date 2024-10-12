@@ -1,95 +1,195 @@
-"use client"
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import { ArrowLeft, Camera, Eye } from 'lucide-react';
+import { ToastContainer, toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import 'react-toastify/dist/ReactToastify.css';
+const TournamentCreation = () => {
+  const router = useRouter();
 
-const AccountSettings = () => {
+  const [formData, setFormData] = useState({
+    nom_des_qualifications: '',
+    start_date: '',
+    end_date: '',
+    status: 'Ouvert aux inscriptions',
+    description_des_qualifications: '',
+    nombre_maximum_participants: '',
+    prize_pool: '',
+    format_des_qualifications: 'Single Elimination',
+    type_de_match: '',
+    type_de_jeu: '',
+    image: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}new_tournament.php`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+
+          });
+          setTimeout(() => {
+            router.push('/dashboards/tournaments'); // Redirect to tournaments list
+           }, 1500);      } else {
+        alert('Error creating tournament: ' + data.message);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+      alert(`An error occurred while creating the tournament.${error}`);
+    }
+  };
+
   return (
     <div className="text-gray-300 min-h-screen p-4 ">
+             <ToastContainer />
+
+
+
       <div className=" mx-auto">
-        {/* <div className="flex justify-between items-center mb-8">
-          <a href="#" className="text-orange-500 flex items-center">
-            <ArrowLeft className="mr-2" size={20} />
-            Go back
-          </a>
-        </div> */}
-        
-        <h1 className="text-3xl font-bold mb-2">NEW TOURNAMENT</h1>
-        <p className="text-gray-500 mb-8">create a tournament and set e-mail preferences.</p>
-        
-        <form className="space-y-6">
-      <div className="grid grid-cols-3 gap-6">
-        <div>
-          <label className="block text-sm font-medium mb-2">First name</label>
-          <input type="text" defaultValue="Boris" className="w-full bg-gray-800 p-3 angular-cut" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Last name</label>
-          <input type="text" defaultValue="Wicked" className="w-full bg-gray-800 p-3 angular-cut" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Nickname</label>
-          <input type="text" defaultValue="Wick" className="w-full bg-gray-800 p-3 angular-cut" />
-        </div>
-      </div>
-      
-      <div>
-        <label className="block text-sm font-medium mb-2">Location</label>
-        <input type="text" defaultValue="Belgrade, Serbia" className="w-full bg-gray-800 p-3 angular-cut" />
-      </div>
-      
-      <div>
-        <label className="block text-sm font-medium mb-2">Email</label>
-        <input type="email" defaultValue="boris@wicked.com" className="w-full bg-gray-800 p-3 angular-cut" />
-      </div>
-      
-      <div className="grid grid-cols-3 gap-6">
-        <div>
-          <label className="block text-sm font-medium mb-2">Old password</label>
-          <div className="relative">
-            <input type="password" className="w-full bg-gray-800 p-3 pr-10 angular-cut" />
-            <Eye className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
+        <h1 className="text-3xl font-bold mb-2">NOUVEAU TOURNOI</h1>
+        <p className="text-gray-500 mb-8">Créez un tournoi et définissez les préférences.</p>
+
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">Nom des Qualifications</label>
+              <input
+                type="text"
+                name="nom_des_qualifications"
+                value={formData.nom_des_qualifications}
+                onChange={handleChange}
+                className="w-full bg-gray-800 p-3 angular-cut"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Date de Début</label>
+              <input
+                type="date"
+                name="start_date"
+                value={formData.start_date}
+                onChange={handleChange}
+                className="w-full bg-gray-800 p-3 angular-cut"
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">New password</label>
-          <input type="password" className="w-full bg-gray-800 p-3 angular-cut" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Repeat new</label>
-          <input type="password" className="w-full bg-gray-800 p-3 angular-cut" />
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-3 gap-6">
-        <div>
-          <label className="block text-sm font-medium mb-2">Twitter</label>
-          <input type="text" defaultValue="@Boris_Wick" className="w-full bg-gray-800 p-3 angular-cut" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Instagram</label>
-          <input type="text" defaultValue="@Boris_Wick" className="w-full bg-gray-800 p-3 angular-cut" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Discord</label>
-          <input type="text" defaultValue="Boris Wick#1234" className="w-full bg-gray-800 p-3 angular-cut" />
-        </div>
-      </div>
-      
-      <div className="flex items-center justify-center w-full">
-        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-700 border-dashed cursor-pointer bg-gray-800 hover:bg-gray-700 angular-cut">
-          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-            <Camera className="w-10 h-10 mb-3 text-gray-400" />
-            <p className="mb-2 text-sm text-gray-400"><span className="font-semibold">UPLOAD PROFILE PICTURE</span></p>
-            <p className="text-xs text-gray-500">PNG, JPG or GIF (MAX. 800x400px)</p>
+
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">Date de Fin</label>
+              <input
+                type="date"
+                name="end_date"
+                value={formData.end_date}
+                onChange={handleChange}
+                className="w-full bg-gray-800 p-3 angular-cut"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Statut des Qualifications</label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="w-full bg-gray-800 p-3 angular-cut"
+              >
+                <option>Ouvert aux inscriptions</option>
+                <option>En cours</option>
+                <option>Terminé</option>
+                <option>Annulé</option>
+              </select>
+            </div>
           </div>
-          <input id="dropzone-file" type="file" className="hidden" />
-        </label>
-      </div>
-      
-      <div className="flex justify-end">
-        <button type="submit" className="px-6 py-3 bg-orange-500 text-white angular-cut-button">
-          SAVE CHANGES
-        </button>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Description des Qualifications</label>
+            <textarea
+              name="description_des_qualifications"
+              value={formData.description_des_qualifications}
+              onChange={handleChange}
+              className="w-full bg-gray-800 p-3 angular-cut"
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Nombre Maximum de Participants
+              </label>
+              <input
+                type="number"
+                name="nombre_maximum_participants"
+                value={formData.nombre_maximum_participants}
+                onChange={handleChange}
+                className="w-full bg-gray-800 p-3 angular-cut"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Format des Qualifications</label>
+              <select
+                name="format_des_qualifications"
+                value={formData.format_des_qualifications}
+                onChange={handleChange}
+                className="w-full bg-gray-800 p-3 angular-cut"
+              >
+                <option>Single Elimination</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">Type de Match</label>
+              <input
+                type="text"
+                name="type_de_match"
+                value={formData.type_de_match}
+                onChange={handleChange}
+                className="w-full bg-gray-800 p-3 angular-cut"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Type de Jeu</label>
+              <input
+                type="text"
+                name="type_de_jeu"
+                value={formData.type_de_jeu}
+                onChange={handleChange}
+                className="w-full bg-gray-800 p-3 angular-cut"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <button type="submit" className="px-6 py-3 bg-primary text-white angular-cut-button">
+              CRÉER LE TOURNOI
+            </button>
+          </div>
+        </form>
       </div>
 
       <style jsx global>{`
@@ -108,7 +208,7 @@ const AccountSettings = () => {
         .angular-cut::after {
           content: '';
           position: absolute;
-          background-color: #374151; /* Tailwind's gray-700, adjust as needed */
+          background-color: #374151;
         }
         .angular-cut::before {
           top: 0;
@@ -141,7 +241,7 @@ const AccountSettings = () => {
         .angular-cut-button::after {
           content: '';
           position: absolute;
-          background-color: #78350f; /* Tailwind's orange-900, for a darker border */
+          background-color: #78350f;
         }
         .angular-cut-button::before {
           top: 0;
@@ -160,11 +260,8 @@ const AccountSettings = () => {
           transform-origin: bottom left;
         }
       `}</style>
-    </form>
-      </div>
-      
     </div>
   );
 };
 
-export default AccountSettings;
+export default TournamentCreation;

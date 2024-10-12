@@ -1,167 +1,121 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import Typography from '@mui/material/Typography';
-import * as dropdownData from './data';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronDown, LogOut, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-import { IconMail } from '@tabler/icons-react';
-import { Stack } from '@mui/system';
-import Image from 'next/image';
+const ProfileDropdown = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userType, setUserType] = useState('');
+  const router = useRouter();
+  const dropdownRef = useRef(null);
 
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    const storedUserId = localStorage.getItem('userId');
+    const storedUserType = localStorage.getItem('userType');
+    
+    if (!storedUsername || !storedUserId) {
+      router.push('/auth/auth1/login');
+    } else {
+      setUserName(storedUsername);
+      setUserType(storedUserType || 'User');
+    }
 
-const Profile = () => {
-  const [anchorEl2, setAnchorEl2] = useState(null);
-  const handleClick2 = (event) => {
-    setAnchorEl2(event.currentTarget);
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [router]);
+
+  const handleSignOut = () => {
+    localStorage.removeItem('userSessionToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userType');
+    router.push('/auth/auth1/login');
   };
-  const handleClose2 = () => {
-    setAnchorEl2(null);
-  };
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  if (!userName) {
+    return null;
+  }
 
   return (
-    <Box>
-      <IconButton
-        size="large"
-        aria-label="show 11 new notifications"
-        color="inherit"
-        aria-controls="msgs-menu"
-        aria-haspopup="true"
-        sx={{
-          ...(typeof anchorEl2 === 'object' && {
-            color: 'primary.main',
-          }),
-        }}
-        onClick={handleClick2}
+    <div ref={dropdownRef} className="relative inline-block text-left">
+      <div 
+        className="flex items-center space-x-3 bg-gray-800 rounded-lg py-2 px-4 cursor-pointer hover:bg-gray-700 transition-colors duration-200 angular-cut"
+        onClick={toggleDropdown}
       >
-        <Avatar
-          src={"/images/profile/user-1.jpg"}
-          alt={'ProfileImg'}
-          sx={{
-            width: 35,
-            height: 35,
-          }}
+        <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+        <img 
+          src="/images/profile/user-1.jpg" 
+          alt="Profile" 
+          className="w-8 h-8 rounded-full"
         />
-      </IconButton>
-      {/* ------------------------------------------- */}
-      {/* Message Dropdown */}
-      {/* ------------------------------------------- */}
-      <Menu
-        id="msgs-menu"
-        anchorEl={anchorEl2}
-        keepMounted
-        open={Boolean(anchorEl2)}
-        onClose={handleClose2}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        sx={{
-          '& .MuiMenu-paper': {
-            width: '360px',
-            p: 4,
-          },
-        }}
-      >
-        <Typography variant="h5">User Profile</Typography>
-        <Stack direction="row" py={3} spacing={2} alignItems="center">
-        <Avatar src={"/images/profile/user-1.jpg"} alt={"ProfileImg"} sx={{ width: 95, height: 95 }} />
-          <Box>
-            <Typography variant="subtitle2" color="textPrimary" fontWeight={600}>
-              Mathew Anderson
-            </Typography>
-            <Typography variant="subtitle2" color="textSecondary">
-              Designer
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              color="textSecondary"
-              display="flex"
-              alignItems="center"
-              gap={1}
+        </div>
+        <div className="text-white">
+          <p className="text-sm font-semibold">{userName}</p>
+          <p className="text-xs text-primary">{userType}</p>
+        </div>
+        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`} />
+      </div>
+
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
+          <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+            <button
+              className="flex w-full items-center px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors duration-200"
+              role="menuitem"
+              onClick={handleSignOut}
             >
-              <IconMail width={15} height={15} />
-              info@modernize.com
-            </Typography>
-          </Box>
-        </Stack>
-        <Divider />
-        {dropdownData.profile.map((profile) => (
-          <Box key={profile.title}>
-            <Box sx={{ py: 2, px: 0 }} className="hover-text-primary">
-              <Link href={profile.href}>
-                <Stack direction="row" spacing={2}>
-                  <Box
-                    width="45px"
-                    height="45px"
-                    bgcolor="primary.light"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center" flexShrink="0"
-                  >
-                    <Avatar
-                      src={profile.icon}
-                      alt={profile.icon}
-                      sx={{
-                        width: 24,
-                        height: 24,
-                        borderRadius: 0,
-                      }}
-                    />
-                  </Box>
-                  <Box>
-                    <Typography
-                      variant="subtitle2"
-                      fontWeight={600}
-                      color="textPrimary"
-                      className="text-hover"
-                      noWrap
-                      sx={{
-                        width: '240px',
-                      }}
-                    >
-                      {profile.title}
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      variant="subtitle2"
-                      sx={{
-                        width: '240px',
-                      }}
-                      noWrap
-                    >
-                      {profile.subtitle}
-                    </Typography>
-                  </Box>
-                </Stack>
-              </Link>
-            </Box>
-          </Box>
-        ))}
-        <Box mt={2}>
-          <Box bgcolor="primary.light" p={3} mb={3} overflow="hidden" position="relative">
-            <Box display="flex" justifyContent="space-between">
-              <Box>
-                <Typography variant="h5" mb={2}>
-                  Unlimited <br />
-                  Access
-                </Typography>
-                <Button variant="contained" color="primary">
-                  Upgrade
-                </Button>
-              </Box>
-              <Image src={"/images/backgrounds/unlimited-bg.png"} width={150} height={183} alt="unlimited" className="signup-bg" />
-            </Box>
-          </Box>
-          <Button href="/auth/auth1/login" variant="outlined" color="primary" component={Link} fullWidth>
-            Logout
-          </Button>
-        </Box>
-      </Menu>
-    </Box>
+              <LogOut className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+              Sign out
+            </button>
+          </div>
+        </div>
+      )}
+      <style jsx global>{`
+        .angular-cut {
+          position: relative;
+          clip-path: polygon(
+            0 0,
+            calc(100% - 10px) 0,
+            100% 10px,
+            100% 100%,
+            10px 100%,
+            0 calc(100% - 10px)
+          );
+        }
+        .angular-cut::before,
+        .angular-cut::after {
+          content: '';
+          position: absolute;
+          background-color: #374151;
+        }
+        .angular-cut::before {
+          top: 0;
+          right: 0;
+          width: 0px;
+          height: 10px;
+          transform: skew(-45deg);
+          transform-origin: top right;
+        }
+        .angular-cut::after {
+          bottom: 0;
+          left: 0;
+          width: 0px;
+          height: 2px;
+          transform: skew(-45deg);
+          transform-origin: bottom left;
+        }
+      `}</style>
+    </div>
   );
 };
 
-export default Profile;
+export default ProfileDropdown;

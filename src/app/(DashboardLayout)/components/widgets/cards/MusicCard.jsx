@@ -1,63 +1,66 @@
-import { CardContent, Typography, Grid, Card, CardMedia, Box, IconButton } from '@mui/material';
-import { Stack } from '@mui/system';
-import { IconPlayerPlay, IconPlayerSkipBack, IconPlayerSkipForward } from '@tabler/icons-react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const musicCard = [
-  {
-    title: 'Uptown Funk',
-    subheader: 'Jon Bon Jovi',
-    img: "/images/blog/blog-img5.jpg",
-  },
-  {
-    title: 'Blank Space',
-    subheader: 'Madonna',
-    img: "/images/blog/blog-img4.jpg",
-  },
-  {
-    title: 'Lean On',
-    subheader: 'Jennifer Lopez',
-    img: "/images/blog/blog-img3.jpg",
-  },
-];
+const ParticipantCard = ({ participant }) => (
+  <div className="bg-gray-800 rounded-lg shadow-md overflow-hidden flex">
+    <div className="flex flex-col flex-grow p-4">
+      <div className="flex-grow">
+        <h5 className="text-xl font-semibold mb-1 text-white">{participant.username}</h5>
+        <p className="text-gray-400">{participant.email}</p>
+      </div>
+      <div className="mt-2 text-sm text-gray-500">
+        Registered: {new Date(participant.registration_date).toLocaleDateString()}
+      </div>
+    </div>
+    <img
+      className="w-2/5 h-32 object-cover"
+      src={participant.avatar || "/images/default-avatar.jpg"}
+      alt={`${participant.username}'s avatar`}
+    />
+  </div>
+);
 
-const MusicCard = () => {
+const ParticipantCardGrid = ({ tournamentId }) => {
+  const [participants, setParticipants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchParticipants = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}get_accepted_participants.php?tournament_id=${tournamentId}`);
+        if (response.data.success) {
+          setParticipants(response.data.participants);
+        } else {
+          setError(response.data.message);
+        }
+      } catch (err) {
+        setError('Failed to fetch participants. Please try again later.');
+        console.error('Error fetching participants:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchParticipants();
+  }, [tournamentId]);
+
+  if (loading) {
+    return <div className="text-white text-center">Loading participants...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500 text-center">{error}</div>;
+  }
+
   return (
-    <Grid container spacing={3}>
-      {musicCard.map((card, index) => (
-        <Grid item xs={12} sm={4} key={index}>
-          <Card sx={{ display: 'flex', p: 0 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="h5">
-                  {card.title}
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary" component="div">
-                  {card.subheader}
-                </Typography>
-              </CardContent>
-              <Stack direction="row" spacing={2} px={2} pb={3}>
-                <IconButton aria-label="previous">
-                  <IconPlayerSkipBack width="20" />
-                </IconButton>
-                <IconButton aria-label="play/pause" color="error">
-                  <IconPlayerPlay width="20" />
-                </IconButton>
-                <IconButton aria-label="next">
-                  <IconPlayerSkipForward width="20" />
-                </IconButton>
-              </Stack>
-            </Box>
-            <CardMedia
-              component="img"
-              sx={{ width: '100%', height: 180 }}
-              image={card.img}
-              alt="Live from space album cover"
-            />
-          </Card>
-        </Grid>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {participants.map((participant) => (
+        <ParticipantCard key={participant.registration_id} participant={participant} />
       ))}
-    </Grid>
+    </div>
   );
 };
 
-export default MusicCard;
+export default ParticipantCardGrid;

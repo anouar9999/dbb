@@ -1,168 +1,30 @@
-'use client';
-import React, { useState } from 'react';
-import {
-  ChevronRight,
-  CircleUserRound,
-  Facebook,
-  Gamepad2,
-  Joystick,
-  MapPin,
-  Plus,
-  PlusCircle,
-  Shapes,
-  Target,
-  Wallet,
-} from 'lucide-react';
-import { Settings, Users, Calendar, FileText } from 'lucide-react';
-import NeonSharpEdgedProgressBar from '@/app/(DashboardLayout)/SharpEdgedProgressBar';
-import AvatarGroup from '@/app/(DashboardLayout)/AvatarGroup';
+"use client"
+import React, { useEffect, useState } from 'react';
+import { ChevronRight, CircleUserRound, Gamepad2, Joystick, Plus, Shapes, Wallet, Settings, Users, Calendar, FileText, PlusCircle, MapPin } from 'lucide-react';
 import PrizeList from '@/app/(DashboardLayout)/PrizeList';
-import SquadFormatCard from '@/app/(DashboardLayout)/SquadFormatCard';
-import MatchCard from '@/app/(DashboardLayout)/MatchCard';
-import CustomButton from '@/app/(DashboardLayout)/CustomButton';
-import { PlusOne, Thunderstorm } from '@mui/icons-material';
-import { ChevronDown, ChevronUp, Clock, Trophy } from 'lucide-react';
 import Image from 'next/image';
-import GameCard from '@/app/(DashboardLayout)/TournamentCard';
-import { Checkbox } from 'formik-mui';
-import { Label } from '@headlessui/react';
 
-const EsportsTournamentSidebar = () => {
-  return (
-    <div className="flex gap-6">
-      {/* Left Column - Smaller Section */}
-      <UserProfileSection />
+const NeonSharpEdgedProgressBar = ({ progress }) => (
+  <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+    <div
+      className="h-full bg-gradient-to-r from-orange-500 to-red-500"
+      style={{ width: `${progress}%` }}
+    />
+  </div>
+);
 
-      {/* Right Column - Larger Section */}
-      <div className="w-2/3 space-y-6">
-        <TabComponent />
-      </div>
-    </div>
-  );
-};
-
-export default EsportsTournamentSidebar;
-
-const TabComponent = () => {
-  const [activeTab, setActiveTab] = useState('Overview');
-  const tabs = ['Overview', 'Match history', 'Tournaments'];
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'Overview':
-        return (
-          <div className="text-white">
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex space-x-4">
-                <SquadFormatCard
-                  icon={<Thunderstorm />}
-                  title={'6802'}
-                  subTitle={'Matches played'}
-                />
-                <SquadFormatCard icon={<Trophy />} title={'869'} subTitle={'Tournmaent played'} />
-                <SquadFormatCard
-                  icon={
-                    <img
-                      src="/images/backgrounds/LOL_Logo_Rendered_Hi-Res_onblue-4x3-removebg-preview.png"
-                      className="w-24"
-                      alt="LOL Logo"
-                    />
-                  }
-                  subTitle={'Favorite game'}
-                />
-              </div>
-            </div>
-
-            <h3 className="font-bold text-sm">Rules</h3>
-
-            <div className="bg-transparent my-4 p-4 rounded-lg">
-              <RocketLeagueStats />
-            </div>
-          </div>
-        );
-
-      case 'Match history':
-        return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            <UpcomingMatchSummary />
-            <MatchSummary />
-            <MatchSummary />
-            <MatchSummary />
-            <MatchSummary />
-            <MatchSummary />
-            <UpcomingMatchSummary />
-          </div>
-        );
-
-      default:
-        return (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-              <GameCard
-                image={
-                  'https://img.freepik.com/photos-gratuite/fond-ecran-jeu-3d-abstrait-colore-noir-or-bords-nets_1409-4821.jpg?t=st=1721919045~exp=1721922645~hmac=2069894c6ea74720a51baf0b8dd995444e6634b7f410952b1be384b780d24cf3&w=826'
-                }
-              />
-              <GameCard image={'https://storage.googleapis.com/pod_public/1300/168838.jpg'} />
-              <GameCard
-                image={
-                  'https://img.freepik.com/premium-photo/illustration-gaming-joystick_800563-4110.jpg'
-                }
-              />
-              <GameCard
-                image={
-                  'https://img.freepik.com/photos-gratuite/fond-ecran-jeu-3d-abstrait-colore-noir-or-bords-nets_1409-4821.jpg?t=st=1721919045~exp=1721922645~hmac=2069894c6ea74720a51baf0b8dd995444e6634b7f410952b1be384b780d24cf3&w=826'
-                }
-              />
-              <GameCard image={'https://storage.googleapis.com/pod_public/1300/168838.jpg'} />
-              <GameCard
-                image={
-                  'https://img.freepik.com/photos-gratuite/fond-ecran-jeu-3d-abstrait-colore-noir-or-bords-nets_1409-4821.jpg?t=st=1721919045~exp=1721922645~hmac=2069894c6ea74720a51baf0b8dd995444e6634b7f410952b1be384b780d24cf3&w=826'
-                }
-              />
-              <GameCard
-                image={
-                  'https://img.freepik.com/photos-gratuite/fond-ecran-jeu-3d-abstrait-colore-noir-or-bords-nets_1409-4821.jpg?t=st=1721919045~exp=1721922645~hmac=2069894c6ea74720a51baf0b8dd995444e6634b7f410952b1be384b780d24cf3&w=826'
-                }
-              />
-              <GameCard image={'https://storage.googleapis.com/pod_public/1300/168838.jpg'} />
-            </div>
-          </>
-        );
-    }
-  };
-
-  return (
-    <div className=" text-gray-300 ">
-      <div className="flex space-x-7 pb">
-        {tabs.map((tab) => (
-          <div key={tab} className="relative inline-block">
-            <svg
-              width="100"
-              height="27"
-              viewBox="0 0 100 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6 0H87C90.5 0 93.5 1 95.5 3L100 7.5V27.5C100 30 98 32 95.5 32H13C9.5 32 6.5 31 4.5 29L0 24.5V4.5C0 2 2 0 4.5 0H6Z"
-                fill={activeTab === tab ? '#fe5821' : null}
-              />
-            </svg>
-            <button
-              onClick={() => setActiveTab(tab)}
-              className={`absolute inset-0  flex items-center justify-center text-xs font-semibold 
-                ${activeTab === tab ? 'text-white' : 'text-gray-400'}`}
-            >
-              <span>{tab}</span>
-            </button>
-          </div>
-        ))}
-      </div>
-      <div className="mt-4  rounded-lg">{renderTabContent()}</div>
-    </div>
-  );
-};
+const AvatarGroup = () => (
+  <div className="flex -space-x-2 overflow-hidden">
+    {[...Array(4)].map((_, i) => (
+      <img
+        key={i}
+        className="inline-block h-8 w-8 rounded-full ring-2 ring-gray-800"
+        src={`https://i.pravatar.cc/150?img=${i + 1}`}
+        alt="User avatar"
+      />
+    ))}
+  </div>
+);
 
 const UserProfileSection = () => {
   const roundedHexagonClipPath = `
@@ -173,9 +35,9 @@ const UserProfileSection = () => {
       5% 75%, 5% 25%
     )
   `;
-
+ 
   return (
-    <div className="text-white p-6 w-80">
+    <div className="text-white  ">
       <div className="flex items-center mb-7">
         <div className="mr-4 relative w-16 h-16">
           <img
@@ -203,49 +65,18 @@ const UserProfileSection = () => {
         </div>
       </div>
 
-      <div className="relative inline-block">
-        <svg
-          width="100"
-          height="32"
-          viewBox="0 0 100 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6 0H87C90.5 0 93.5 1 95.5 3L100 7.5V27.5C100 30 98 32 95.5 32H13C9.5 32 6.5 31 4.5 29L0 24.5V4.5C0 2 2 0 4.5 0H6Z"
-            fill="#fe5821"
-          />
-        </svg>
-        <button className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-white">
-          <span className="flex items-center">
-            <PlusCircle className="w-4 h-4 mr-1" />
-            Add friend
-          </span>
-        </button>
-      </div>
+    
 
-      <div className="my-7">
-        <h3 className="text-sm font-medium mb-1">Learn more about me</h3>
-        <p className="text-xs text-gray-400">
-          Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
-          velit, sed quia non numquam eius modi.
-        </p>
-      </div>
+      <div className='my-7'>
+          <h3 className="font-bold text-lg mb-2">About The Player</h3>
+          <p className="text-sm text-gray-400">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aut odio id obcaecati
+            necessitatibus! Quis officia architecto, illum sunt, magni quae est aliquam voluptatibus
+            reiciendis sint vitae dignissimos debitis eos accusantium.
+          </p>
+        </div>
 
-      <div className="flex items-center text-xs text-gray-400 mb-7">
-        <div className="flex items-center mr-4 ">
-          <MapPin className="w-4 h-4 mr-1 text-[#cd853f]" />
-          <span className="text-white">LIMA, PERU</span>
-        </div>
-        <div className="flex items-center mr-4">
-          <Gamepad2 className="w-4 h-4 mr-1  text-[#cd853f]" />
-          <span className="text-white">3 GAMES</span>
-        </div>
-        <div className="flex items-center">
-          <Calendar className="w-4 h-4 mr-1  text-[#cd853f]" />
-          <span className="text-white">22/09/23</span>
-        </div>
-      </div>
+     
 
       <style jsx global>{`
         .angular-cut {
@@ -333,9 +164,9 @@ const UserProfileSection = () => {
         }
       `}</style>
 
-      <div>
+      <div className='p-6'>
         <h3 className="text-sm font-medium mb-2 ">My platform IDs</h3>
-        <div className="bg-gray-800  px-3 py-2 flex items-center justify-between mb-2">
+        <div className="bg-gray-800  px-3 py-2 flex items-center justify-between mb-2 angular-cut">
           <span className="text-gray-400 text-sm">marz76_spirit_john</span>
           <div className="w-5 h-5 bg-gray-700 rounded-full flex items-center justify-center">
             <svg
@@ -349,7 +180,7 @@ const UserProfileSection = () => {
             </svg>
           </div>
         </div>
-        <div className="bg-orange-500  px-3 py-2 flex items-center justify-between">
+        <div className="bg-orange-500  px-3 py-2 flex items-center justify-between angular-cut">
           <span className="text-sm">marz76_spirit4420</span>
           <div className="w-5 h-5 bg-orange-600 rounded-full flex items-center justify-center">
             <svg
@@ -367,6 +198,149 @@ const UserProfileSection = () => {
     </div>
   );
 };
+
+const SquadFormatCard = ({ icon, title, subTitle }) => (
+  <div className="bg-gray-800 p-4 rounded-lg flex flex-col items-center text-center">
+    {typeof icon === 'string' ? <img src={icon} alt={title} className="w-14 h-12 mb-2" /> : React.cloneElement(icon, { size: 24, className: "mb-2" })}
+    <h4 className="font-bold">{title}</h4>
+    <p className="text-xs text-gray-400">{subTitle}</p>
+  </div>
+);
+
+const MatchCard = () => (
+  <div className="bg-gray-800 p-4 rounded-lg">
+    <div className="flex justify-between items-center mb-2">
+      <span className="text-sm font-bold">Team A</span>
+      <span className="text-sm text-gray-400">VS</span>
+      <span className="text-sm font-bold">Team B</span>
+    </div>
+    <div className="text-center text-xs text-gray-400">Upcoming Match</div>
+  </div>
+);
+
+const TabComponent = () => {
+  const [activeTab, setActiveTab] = useState('Overview');
+  const tabs = ['Overview', 'Match Finder', 'Standings', 'Matches'];
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'Overview':
+        return (
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <SquadFormatCard icon={<Gamepad2 />} title="SQUAD" subTitle="Format of game" />
+              <SquadFormatCard icon={<Shapes />} title="PLAYSTATION" subTitle="Platform Played" />
+              <SquadFormatCard icon={<CircleUserRound />} title="12" subTitle="Number of Players" />
+              <SquadFormatCard icon="/images/backgrounds/LOL_Logo_Rendered_Hi-Res_onblue-4x3-removebg-preview.png" subTitle="Game" />
+            </div>
+            <div>
+              <h3 className="font-bold text-lg mb-4">Rules</h3>
+              <div className="bg-gray-800 p-4 rounded-lg text-sm space-y-4">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima quibusdam, numquam similique dolor magni blanditiis vero excepturi sapiente, eius iure dicta, ea nesciunt soluta dolorem aliquid in tempore corporis explicabo.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima quibusdam, numquam similique dolor magni blanditiis vero excepturi sapiente, eius iure dicta, ea nesciunt soluta dolorem aliquid in tempore corporis explicabo.</p>
+                <ul className="list-disc list-inside space-y-2">
+                  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+                  <li>Minima quibusdam, numquam similique dolor magni blanditiis vero excepturi sapiente.</li>
+                  <li>Eius iure dicta, ea nesciunt soluta dolorem aliquid in tempore corporis explicabo.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        );
+      case 'Match Finder':
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+          <UpcomingMatchSummary />
+          <MatchSummary />
+          <MatchSummary />
+          <MatchSummary />
+          <MatchSummary />
+          <MatchSummary />
+          <UpcomingMatchSummary />
+        </div>
+        );
+      default:
+        return <p className="text-center text-gray-400">Content for {activeTab}</p>;
+    }
+  };
+
+  return (
+    <div className="text-gray-300">
+      <div className="flex space-x-4 mb-4">
+        {tabs.map((tab) => (
+          <div key={tab} className="relative inline-block">
+            <svg
+              width="100"
+              height="32"
+              viewBox="0 0 100 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 0H87C90.5 0 93.5 1 95.5 3L100 7.5V27.5C100 30 98 32 95.5 32H13C9.5 32 6.5 31 4.5 29L0 24.5V4.5C0 2 2 0 4.5 0H6Z"
+                fill={activeTab === tab ? "#fe5821" : "transparent"}
+              />
+            </svg>
+            <button
+              onClick={() => setActiveTab(tab)}
+              className={`absolute inset-0 flex items-center justify-center text-xs font-semibold 
+                ${activeTab === tab ? 'text-white' : 'text-gray-400'}`}
+            >
+              <span>{tab}</span>
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="bg-gray-900 p-6 rounded-lg">
+        {renderTabContent()}
+      </div>
+    </div>
+  );
+};
+const HeroSection = ({ title, logoSrc, backgroundSrc }) => (
+  <div className="relative h-48 mb-6 rounded-lg overflow-hidden">
+    <img
+      src={backgroundSrc}
+      alt="Tournament background"
+      className="absolute inset-0 w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent"></div>
+    <div className="absolute inset-0 flex items-center p-6">
+   
+      <div>
+        <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
+        <NeonSharpEdgedProgressBar progress={45} />
+        <p className="text-sm text-gray-300 mt-2">Started in 44:39</p>
+      </div>
+    </div>
+  </div>
+);
+const EsportsTournamentSidebar = () => {
+  return (
+    <div className="flex flex-col lg:flex-row gap-8 bg-gray-900 text-white p-6 rounded-lg">
+      {/* Left Column - Tournament Info */}
+      <div className="lg:w-1/3 space-y-6">
+      <UserProfileSection/>
+      
+       
+
+       
+
+
+     
+       
+      </div>
+
+      {/* Right Column - Tab Content */}
+      <div className="lg:w-2/3">
+        <TabComponent />
+      </div>
+    </div>
+  );
+};
+
+export default EsportsTournamentSidebar;
+
 
 const MatchSummary = () => {
   return (
@@ -491,34 +465,6 @@ const UpcomingMatchSummary = () => {
           </div>
           <div className="text-gray-400 text-sm font-semibold">TBD</div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-const RocketLeagueStats = () => {
-  return (
-    <div className="bg-gray-800 text-white p-4 rounded-lg shadow-lg max-w-sm">
-      <div className="flex justify-between items-center mb-4">
-        <Image
-          src="/images/backgrounds/LOL_Logo_Rendered_Hi-Res_onblue-4x3-removebg-preview.png"
-          width={80}
-          height={80}
-          alt="Team B Avatar"
-          className="rounded-full"
-        />
-
-        <div className="flex items-center space-x-1">
-          <div className="w-1 h-1 bg-yellow-500 rounded-full"></div>
-          <div className="text-xs text-gray-400">Playing since 2015</div>
-        </div>
-      </div>
-
-      <hr className='p-1 text-grey-600' />
-
-      <div className="bg-gray-700 p-3 rounded-md">
-        <div className="text-sm font-medium">Moonshine Gaming Marathon</div>
-        <div className="text-xs text-gray-400">Where stars prevail</div>
       </div>
     </div>
   );

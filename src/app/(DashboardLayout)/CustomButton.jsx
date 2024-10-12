@@ -1,33 +1,131 @@
 import React from 'react';
+import Link from 'next/link';
+import { CirclePlus } from 'lucide-react';
 
-const CustomButton = ({ title, icon, color }) => {
-  return (
-    <div className="relative inline-block w-full sm:w-auto">
-      <svg
-        className="w-full h-auto sm:w-24 md:w-28 lg:w-32"
-        viewBox="0 0 100 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <path
-          d="M6 0H87C90.5 0 93.5 1 95.5 3L100 7.5V27.5C100 30 98 32 95.5 32H13C9.5 32 6.5 31 4.5 29L0 24.5V4.5C0 2 2 0 4.5 0H6Z"
-          fill={color || "#ff4700"}
-        />
-      </svg>
-      <button className="absolute inset-0 flex items-center justify-center text-white text-xs sm:text-sm md:text-base font-semibold p-1 sm:p-2">
-        {icon && (
-          <span className="mr-1 sm:mr-1.5">
-            {React.cloneElement(icon, { 
-              size: "1em",
-              className: "w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5"
-            })}
-          </span>
-        )}
-        <span className="truncate">{title}</span>
-      </button>
-    </div>
+const CustomButton = ({ 
+  title, 
+  href, 
+  icon: Icon = CirclePlus, 
+  onClick,
+  disabled = false,
+  className = '',
+  mobileTitle = 'New',
+  color = '#ff4700' // Default color
+}) => {
+  const colorClasses = {
+    blue: 'from-blue-500 to-cyan-300 hover:from-blue-600 hover:to-cyan-400',
+    green: 'from-green-500 to-emerald-300 hover:from-green-600 hover:to-emerald-400',
+    red: 'from-red-500 to-pink-300 hover:from-red-600 hover:to-pink-400',
+    purple: 'from-purple-500 to-indigo-300 hover:from-purple-600 hover:to-indigo-400',
+  };
+
+  const buttonClasses = `
+    relative overflow-hidden
+    text-white font-bold rounded-md text-sm px-6 py-3 
+    inline-flex items-center justify-center
+    transition-all duration-300 ease-in-out
+    transform hover:scale-105 angular-cut
+    focus:outline-none focus:ring-2 focus:ring-offset-2 ]
+    ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+    ${className}
+  `;
+
+  const buttonContent = (
+    <button 
+      className={buttonClasses}
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={title}
+    >
+      <span className={`absolute inset-0 bg-gradient-to-r [${colorClasses[color] || colorClasses.blue}]`}></span>
+      <span className="absolute inset-0 bg-gradient-to-r from-black to-transparent opacity-50"></span>
+      <span className="relative flex items-center">
+        <Icon className="w-5 h-5 mr-2 animate-pulse" />
+        <span className="hidden md:inline">{title}</span>
+        <span className="md:hidden">{mobileTitle}</span>
+      </span>
+      <span className="absolute inset-0  opacity-25 rounded-md"></span>
+      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12"></span>
+      <style jsx global>{`
+        .angular-cut {
+          position: relative;
+          clip-path: polygon(
+            0 0,
+            calc(100% - 10px) 0,
+            100% 10px,
+            100% 100%,
+            10px 100%,
+            0 calc(100% - 10px)
+          );
+        }
+        .angular-cut::before,
+        .angular-cut::after {
+          content: '';
+          position: absolute;
+          background-color: #374151;
+        }
+        .angular-cut::before {
+          top: 0;
+          right: 0;
+          width: 0px;
+          height: 0px;
+          transform: skew(-45deg);
+          transform-origin: top right;
+        }
+        .angular-cut::after {
+          bottom: 0;
+          left: 0;
+          width: 0px;
+          height: 0px;
+          transform: skew(-45deg);
+          transform-origin: bottom left;
+        }
+        .angular-cut-button {
+          position: relative;
+          clip-path: polygon(
+            0 0,
+            calc(100% - 10px) 0,
+            100% 10px,
+            100% 100%,
+            10px 100%,
+            0 calc(100% - 10px)
+          );
+        }
+        .angular-cut-button::before,
+        .angular-cut-button::after {
+          content: '';
+          position: absolute;
+          background-color: #78350f;
+        }
+        .angular-cut-button::before {
+          top: 0;
+          right: 0;
+          width: 0px;
+          height: 0px;
+          transform: skew(-45deg);
+          transform-origin: top right;
+        }
+        .angular-cut-button::after {
+          bottom: 0;
+          left: 0;
+          width: 0px;
+          height: 0px;
+          transform: skew(-45deg);
+          transform-origin: bottom left;
+        }
+      `}</style>
+    </button>
   );
+
+  if (href && !disabled) {
+    return (
+      <Link href={href} className="group">
+        {buttonContent}
+      </Link>
+    );
+  }
+
+  return <div className="group">{buttonContent}</div>;
 };
 
 export default CustomButton;

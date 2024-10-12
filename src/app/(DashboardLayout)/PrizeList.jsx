@@ -12,7 +12,7 @@ const PrizeList = () => {
     <div className="p-5  max-w-sm">
       {prizes.map((prize, index) => (
         <div key={index} className={`mb-0.5 relative ${index === prizes.length - 1 ? 'mb-0' : ''}`}>
-          <div className={`bg-[#1E1F23] py-3 pl-4 pr-6 text-white flex justify-between items-center 
+          <div className={`bg-[#1f2937] py-3 pl-4 pr-6 text-white flex justify-between items-center 
             ${index === 0 ? 'first-item' : ''} 
             ${index === prizes.length - 1 ? 'last-item' : ''}`}>
             <div className="text-sm font-medium text-gray-300">{prize.place}</div>
@@ -21,7 +21,7 @@ const PrizeList = () => {
               <div className="text-[10px] text-gray-500 uppercase mt-[-4px]">{prize.subtext}</div>
             </div>
           </div>
-          <div className="absolute right-3.5 top-1/2 transform -translate-y-1/2 w-0.5 h-6 bg-[#fe5821]"></div>
+          <div className="absolute right-3.5 top-1/2 transform -translate-y-1/2 w-0.5 h-6 bg-primary"></div>
         </div>
       ))}
       <style jsx>{`

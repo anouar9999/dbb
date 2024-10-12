@@ -18,9 +18,12 @@ import "react-quill/dist/quill.snow.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import '@/app/font.css'
+import Image from "next/image";
+import { motion } from 'framer-motion';
+
  const metadata = {
-  title: "Gamius",
-  description: 'Gamius Dashboard',
+  title: "Lbanka League",
+  description: 'Lbanka League Dashboard',
 }
 export const MyApp = ({ children }) => {
   const theme = ThemeSettings();
@@ -56,22 +59,57 @@ export default function RootLayout({ children }) {
             <MyApp children={children} />
           ) : (
             <Box
-            className=""
-            
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100vh",
-          
-
-              }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100vh",
+              backgroundColor: "#05050f",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <motion.div 
+              className="logo-container"
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
-               <div class="glitch-wrapper">
-            <div className="glitch font-custom" data-glitch="GAMIUS">GAMIUS</div>
-         </div>
-            </Box>
+              <div className="mb-6 md:mb-8 flex justify-center">
+                <div className="flex flex-col justify-center items-center h-screen">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                      delay: 0.2
+                    }}
+                  >
+                    <Image
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Logo_inwi.svg/2560px-Logo_inwi.svg.png"
+                      alt="Brand Logo"
+                      width={350}
+                      height={100}
+                      className="cut-corners"
+                    />
+                  </motion.div>
+                  <motion.div
+                    className="rounded-full h-24 w-24 border-t-2 border-b-2 border-purple-500"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1.5,
+                      ease: "linear",
+                      repeat: Infinity
+                    }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </Box>
           )}
         </Provider>
       </body>

@@ -9,7 +9,10 @@ module.exports = {
   ],
   theme: {
     extend: {
-
+      colors: {
+        'primary': '#AE2085',
+       
+      },
       fontFamily: {
         custom: ['nightWarrior', 'sans-serif'],
         pilot: ['pilot', 'sans-serif'],

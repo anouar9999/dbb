@@ -1,7 +1,7 @@
 {
   "/not-found": "app/not-found.js",
+  "/auth/auth1/login/page": "app/auth/auth1/login/page.js",
   "/(DashboardLayout)/page": "app/(DashboardLayout)/page.js",
-  "/(DashboardLayout)/dashboards/ecommerce/page": "app/(DashboardLayout)/dashboards/ecommerce/page.js",
-  "/(DashboardLayout)/dashboards/tournament/[id]/page": "app/(DashboardLayout)/dashboards/tournament/[id]/page.js",
-  "/(DashboardLayout)/dashboards/profile/[Player-name]/page": "app/(DashboardLayout)/dashboards/profile/[Player-name]/page.js"
+  "/(DashboardLayout)/dashboards/tournament/[slug]/page": "app/(DashboardLayout)/dashboards/tournament/[slug]/page.js",
+  "/(DashboardLayout)/dashboards/tournaments/page": "app/(DashboardLayout)/dashboards/tournaments/page.js"
 }

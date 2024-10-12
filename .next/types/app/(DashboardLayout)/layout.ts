@@ -1,4 +1,4 @@
-// File: C:\Users\ce pc\Desktop\gamius\main\src\app\(DashboardLayout)\layout.jsx
+// File: C:\Users\ce pc\Desktop\main2\src\app\(DashboardLayout)\layout.jsx
 import * as entry from '../../../../src/app/(DashboardLayout)/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

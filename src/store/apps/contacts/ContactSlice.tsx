@@ -11,12 +11,16 @@ const initialState = {
   contactSearch: '',
   editContact: false,
   currentFilter: 'show_all',
+  triggerGlow:false
 };
 
 export const ContactSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
+    ChangeTriggeGlow:(state, action)=>{
+      state.triggerGlow=action.payload;
+    },
     getContacts: (state, action) => {
       state.contacts = action.payload;
     },
@@ -105,6 +109,7 @@ export const {
   UpdateContact,
   addContact,
   setVisibilityFilter,
+  ChangeTriggeGlow
 } = ContactSlice.actions;
 
 export const fetchContacts = () => async (dispatch) => {

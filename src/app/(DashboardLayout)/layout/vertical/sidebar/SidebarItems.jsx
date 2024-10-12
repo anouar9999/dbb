@@ -15,8 +15,8 @@ const SidebarItems = () => {
   const pathname = usePathname();
 
   return (
-    <nav className=" py-4">
-      <div className="flex flex-col space-y-4">
+    <nav className=" py-10">
+      <div className="flex flex-col space-y-5">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
