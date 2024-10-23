@@ -22,7 +22,6 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.1",
     "@mui/x-date-pickers": "^5.0.15",
     "@mui/x-tree-view": "^6.17.0",
-    "@next/swc-win32-x64-msvc": "^14.2.14",
     "@reduxjs/toolkit": "^1.9.7",
     "@tabler/icons-react": "^2.39.0",
     "apexcharts": "3.43.0",
