@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import { Search ,SearchX} from 'lucide-react';
 import TournamentCard from '../../TournamentCard';
 import { ToastContainer } from 'react-toastify';
 
