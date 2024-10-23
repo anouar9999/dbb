@@ -27,7 +27,7 @@ const Header = ({ setIsMobileOpen }) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 w-full h-16 md:h-20 bg-gray-900 bg-opacity-90 backdrop-filter backdrop-blur-lg flex items-center justify-between px-4 md:px-12 z-50">
+    <header className="absolute top-0 left-0 right-0 w-full h-16 md:h-20 bg-transparent   flex items-center justify-between px-4 md:px-12 z-50">
       <div className={`relative ${isMobile ? 'mx-auto' : ''} w-24 h-12 md:w-48 md:h-20`}>
         <Image
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Logo_inwi.svg/2560px-Logo_inwi.svg.png"

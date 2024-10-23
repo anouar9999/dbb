@@ -11,7 +11,6 @@ import { Provider } from "react-redux";
 import './globals.css' ; // adjust the path if necessary
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import "@/app/api/index";
 import "@/utils/i18n";
 import { NextAppDirEmotionCacheProvider } from "@/utils/theme/EmotionCache";
 import "react-quill/dist/quill.snow.css";
@@ -21,10 +20,7 @@ import '@/app/font.css'
 import Image from "next/image";
 import { motion } from 'framer-motion';
 
- const metadata = {
-  title: "Lbanka League",
-  description: 'Lbanka League Dashboard',
-}
+ 
 export const MyApp = ({ children }) => {
   const theme = ThemeSettings();
 

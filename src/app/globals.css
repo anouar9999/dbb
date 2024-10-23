@@ -552,3 +552,24 @@
      transform: skew(-45deg);
      transform-origin: bottom left;
    }
+   ::-webkit-scrollbar {
+      width:7px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(31, 41, 55, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgb(45, 47, 53, 1);
+      border: 3px solid rgba(31, 41, 55, 0.5);
+      border-radius: 9999px;
+    }
+    
+   
+    
+    /* For Firefox */
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(107, 114, 128, 0.5) rgba(31, 41, 55, 0.5);
+    }

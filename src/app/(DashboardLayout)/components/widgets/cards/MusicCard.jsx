@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import { HelpCircle, Link, Shield, UserCircle, Users } from 'lucide-react';
+
 const ParticipantCard = ({ participant }) => (
-  <div className="bg-gray-800 rounded-lg shadow-md overflow-hidden flex">
-    <div className="flex flex-col flex-grow p-4">
-      <div className="flex-grow">
-        <h5 className="text-xl font-semibold mb-1 text-white">{participant.username}</h5>
-        <p className="text-gray-400">{participant.email}</p>
-      </div>
-      <div className="mt-2 text-sm text-gray-500">
-        Registered: {new Date(participant.registration_date).toLocaleDateString()}
+  <div className="bg-gray-800 rounded-lg shadow-md overflow-hidden flex flex-col w-64">
+    <div className="relative h-48">
+      {participant.avatar ? (
+        <img
+          className="w-full h-full object-cover"
+          src={participant.avatar}
+          alt={`${participant.username}'s avatar`}
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center bg-gray-700">
+          <UserCircle className="w-24 h-24 text-gray-500" />
+        </div>
+      )}
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+        <h5 className="text-xl font-semibold text-white truncate">
+          {participant.username}{' '}
+          {localStorage.getItem('username') === participant.username ? '(You)' : null}
+        </h5>
       </div>
     </div>
-    <img
-      className="w-2/5 h-32 object-cover"
-      src={participant.avatar || "/images/default-avatar.jpg"}
-      alt={`${participant.username}'s avatar`}
-    />
+   
   </div>
 );
 
@@ -29,8 +37,11 @@ const ParticipantCardGrid = ({ tournamentId }) => {
     const fetchParticipants = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}get_accepted_participants.php?tournament_id=${tournamentId}`);
-        if (response.data.success) {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}get_accepted_participants.php?tournament_id=${tournamentId}`,
+        );
+        if (response.data) {
+          console.log(response.data)
           setParticipants(response.data.participants);
         } else {
           setError(response.data.message);
@@ -53,13 +64,25 @@ const ParticipantCardGrid = ({ tournamentId }) => {
   if (error) {
     return <div className="text-red-500 text-center">{error}</div>;
   }
+  
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {participants.map((participant) => (
+    <div className=" mx-auto">
+    {participants.length === 0 ? (
+         <div className="text-center mt-6">
+         <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+           <Users className="text-purple-400" size={32} />
+         </div>
+         <h3 className="text-lg font-semibold text-white mb-2">No Participants Yet</h3>
+         <p className="text-sm text-gray-400 mb-4">Start by adding your first team member</p>
+        
+       </div>
+    ) : (
+      participants.map((participant) => (
         <ParticipantCard key={participant.registration_id} participant={participant} />
-      ))}
-    </div>
+      ))
+    )}
+  </div>
   );
 };
 

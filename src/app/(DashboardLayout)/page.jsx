@@ -4,7 +4,7 @@ import { User, Mail, Star, Target, Gamepad2, Trophy } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const StatCard = ({ title, value, icon: Icon, color }) => (
-  <div className="bg-gray-800 rounded-lg p-6 flex items-center justify-between">
+  <div className="bg-gray-800 rounded-lg p-6 flex items-center justify-between angular-cut">
     <div>
       <h3 className="text-lg font-medium text-gray-200">{title}</h3>
       <p className={`text-2xl font-bold mt-2 ${color}`}>{value}</p>
@@ -19,7 +19,10 @@ const UserStatistics = () => {
   const [loading, setLoading] = useState(true);
   const fetchUserData = async () => {
     try {
+     
+  
       const userId = localStorage.getItem('userId');
+
       if (!userId) {
         throw new Error('No user ID found');
       }
@@ -68,11 +71,10 @@ const UserStatistics = () => {
   const COLORS = ['#00C49F', '#0088FE'];
 
   return (
-    <div className="p-6 space-y-6 bg-gray-900">
-      <h1 className="text-3xl font-bold text-white mb-6">Hello , {userData.username}</h1>
+    <div className="pr-6 space-y-6 ">
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Points" value={userData.points} icon={Star} color="text-yellow-400" />
+        <StatCard  title="Points" value={userData.points} icon={Star} color="text-yellow-400" />
         <StatCard title="Rank" value={userData.rank} icon={Target} color="text-red-400" />
         <StatCard title="Tournaments Participated" value={userData.tournamentsParticipated} icon={Gamepad2} color="text-purple-400" />
         <StatCard title="Tournaments Won" value={userData.tournamentsWon} icon={Trophy} color="text-orange-400" />

@@ -92,23 +92,22 @@ const LeagueOfLegendsProfile = () => {
   }
   return (
     <div className="bg-transparent text-white p-4 rounded-lg shadow-lg">
-      <ToastContainer />
+    <ToastContainer />
 
-      <h3 className="text-2xl font-bold mb-8">
-        TOURNOIS EN COURS ET OUVERTS AUX INSCRIPTIONS
-      </h3>
+    <h3 className="text-5xl   my-6 font-custom">        TOURNOIS EN COURS ET OUVERTS AUX INSCRIPTIONS
+    </h3>
 
-      
-
-      {filteredTournaments.length === 0 ? (
-        <div className="text-center text-gray-400 mt-8">
-          <p>Aucun tournoi ne correspond à votre recherche.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTournaments.map(tournament => (
-            <TournamentCard 
-              key={tournament.id} 
+    {tournaments.length === 0 ? (
+      <div className="text-center text-gray-400 mt-8">
+        <SearchX className="mx-auto mb-4 w-16 h-16" />
+        <p>Vous n avez participé à aucun tournoi correspondant à votre recherche.</p>
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tournaments.map((tournament) => (
+          <>
+            <TournamentCard
+              key={tournament.id}
               id={tournament.id}
               name={tournament.nom_des_qualifications}
               startDate={tournament.start_date}
@@ -122,11 +121,13 @@ const LeagueOfLegendsProfile = () => {
               image={tournament.image}
               prizePool={tournament.prize_pool}
               slug={tournament.slug}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+            />{' '}
+          
+          </>
+        ))}
+      </div>
+    )}
+  </div>
   );
 };
 

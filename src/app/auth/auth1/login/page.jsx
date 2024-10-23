@@ -6,12 +6,14 @@ import { motion } from 'framer-motion';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import '../../../globals.css'
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const loginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('The Email field required'),
@@ -100,7 +102,7 @@ export default function AuthForm() {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left side - Background Image */}
-      <motion.div 
+     <motion.div 
         className={`relative w-full ${isLogin ? 'md:w-1/3':'md:w-1/5' } h-1/4 md:h-full overflow-hidden`}
         initial={{ x: "-100%" }}
         animate={{ x: 0 }}
@@ -212,13 +214,26 @@ export default function AuthForm() {
                 <div className={`flex flex-wrap -mx-2 ${isLogin ? '' : 'mb-4'}`}>
                   <div className={`w-full ${!isLogin ? ' md:w-1/2' : ''}  px-2 mb-4`}>
                     <label htmlFor="password" className="text-white mb-2 block">Password</label>
-                    <Field
-                      name="password"
-                      type="password"
-                      placeholder="Enter your password"
-                      className={`w-full px-3 py-2 md:py-3 bg-gray-800 text-white rounded focus:ring-1 focus:ring-orange-500 angular-cut transition duration-300 ${errors.password && touched.password ? 'border-red-500' : ''}`}
-                    />
-                    <ErrorMessage name="password" component="div" className="text-red-500 text-sm   mt-1" />
+                    <div className="relative">
+                      <Field
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter your password"
+                        className={`w-full px-3 py-2 md:py-3 bg-gray-800 text-white rounded focus:ring-1 focus:ring-orange-500 angular-cut transition duration-300 ${errors.password && touched.password ? 'border-red-500' : ''}`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                      >
+                        {showPassword ? (
+                          <EyeOffIcon className="h-5 w-5 text-gray-400" />
+                        ) : (
+                          <EyeIcon className="h-5 w-5 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
+                    <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
                   {!isLogin && (
                     <div className="w-full md:w-1/2 px-2 mb-4">
@@ -258,9 +273,9 @@ export default function AuthForm() {
                     </div>
                   </div>
                 )}
-                <motion.button 
+             <motion.button 
                   type="submit" 
-                  className="w-full bg-primary text-white mt-4 md:mt-6 py-2 md:py-3 rounded hover:bg-primary transition duration-200 angular-cut relative overflow-hidden"
+                  className="w-full bg-orange-500 text-white mt-4 md:mt-6 py-2 md:py-3 rounded hover:bg-orange-600 transition duration-200 angular-cut relative overflow-hidden font-bold"
                   disabled={isLoading || isSubmitting}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -273,7 +288,7 @@ export default function AuthForm() {
             )}
           </Formik>
           <motion.p 
-            className="text-white text-center mt-4"
+            className="text-gray-300 text-center mt-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.3, duration: 0.5 }}
@@ -284,7 +299,7 @@ export default function AuthForm() {
                 setIsLogin(!isLogin);
                 setServerError('');
               }} 
-              className="text-orange-500 hover:underline"
+              className="text-orange-400 hover:underline font-semibold"
             >
               {isLogin ? 'Register' : 'Login'}
             </button>

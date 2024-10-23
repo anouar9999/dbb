@@ -10,7 +10,7 @@ const nextConfig = {
     // },
   },
   images: {
-    domains: ['t4.ftcdn.net','genius-morocco.com','img.freepik.com','wallpaper.forfun.com','api.dicebear.com','encrypted-tbn0.gstatic.com','play-lh.googleusercontent.com',"yt3.googleusercontent.com","pbs.twimg.com","seeklogo.com","designzonic.com","via.placeholder.com","images.unsplash.com","upload.wikimedia.org"],
+    domains: ["placeholder.co","localhost",'t4.ftcdn.net','genius-morocco.com','img.freepik.com','wallpaper.forfun.com','api.dicebear.com','encrypted-tbn0.gstatic.com','play-lh.googleusercontent.com',"yt3.googleusercontent.com","pbs.twimg.com","seeklogo.com","designzonic.com","via.placeholder.com","images.unsplash.com","upload.wikimedia.org"],
 
   },
   

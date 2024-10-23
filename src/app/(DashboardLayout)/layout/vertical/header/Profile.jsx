@@ -48,7 +48,7 @@ const ProfileDropdown = () => {
   return (
     <div ref={dropdownRef} className="relative inline-block text-left">
       <div 
-        className="flex items-center space-x-3 bg-gray-800 rounded-lg py-2 px-4 cursor-pointer hover:bg-gray-700 transition-colors duration-200 angular-cut"
+        className="flex items-center space-x-3  rounded-lg py-2 px-4 cursor-pointer hover:bg-gray-700 transition-colors duration-200 angular-cut"
         onClick={toggleDropdown}
       >
         <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">

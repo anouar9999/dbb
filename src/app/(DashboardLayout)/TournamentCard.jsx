@@ -26,11 +26,11 @@ const TournamentCard = ({
   };
 
   return (
-    <Link href={`/dashboards/tournament/${slug}`}>
-      <div className="w-full max-w-sm bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:border hover:border-gray-800">
+    <Link href={`/${slug}`}>
+      <div className="w-full max-w-sm  overflow-hidden angular-cut shadow-lg hover:border hover:border-gray-800">
         <div className="relative h-48">
           <Image
-            src={image || "https://via.placeholder.com/400x200"}
+            src={`${image}` }
             alt={name}
             layout="fill"
             objectFit="cover"
@@ -40,7 +40,7 @@ const TournamentCard = ({
         <div className="p-4">
           <h2 className="text-white text-lg font-semibold mb-2">{name}</h2>
           <div className="flex items-center mb-3">
-            <span className={`text-xs text-gray-900 px-2 py-1 rounded-full font-medium ${
+            <span className={`text-xs text-gray-900 px-2 py-1  angular-cut font-medium ${
               status === 'Ouvert aux inscriptions' ? 'bg-yellow-500' : status === 'En cours' ? 'bg-green-500' : 'bg-red-500'
             }`}>
               {status}
@@ -70,7 +70,7 @@ const TournamentCard = ({
 
             {status === 'Ouvert aux inscriptions' ? (
               <button 
-                className="flex items-center space-x-2 bg-[#aa2180] hover:bg-blue-600 text-white text-xs font-semibold px-4 py-2 rounded transition duration-300"
+                className="flex items-center angular-cut space-x-2 bg-[#aa2180] hover:bg-blue-600 text-white text-xs font-semibold px-4 py-2  transition duration-300"
               >
                 <span>Join</span>
                 <ArrowRight size={16} />

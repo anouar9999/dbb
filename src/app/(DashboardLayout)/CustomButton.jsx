@@ -10,13 +10,13 @@ const CustomButton = ({
   disabled = false,
   className = '',
   mobileTitle = 'New',
-  color = '#ff4700' // Default color
+  color = '#aa2180' // Default color
 }) => {
   const colorClasses = {
     blue: 'from-blue-500 to-cyan-300 hover:from-blue-600 hover:to-cyan-400',
     green: 'from-green-500 to-emerald-300 hover:from-green-600 hover:to-emerald-400',
     red: 'from-red-500 to-pink-300 hover:from-red-600 hover:to-pink-400',
-    purple: 'from-purple-500 to-indigo-300 hover:from-purple-600 hover:to-indigo-400',
+    purple: 'from-[#aa2180] to-indigo-300 hover:from-[#aa2180] hover:to-indigo-400',
   };
 
   const buttonClasses = `
@@ -24,7 +24,7 @@ const CustomButton = ({
     text-white font-bold rounded-md text-sm px-6 py-3 
     inline-flex items-center justify-center
     transition-all duration-300 ease-in-out
-    transform hover:scale-105 angular-cut
+    angular-cut
     focus:outline-none focus:ring-2 focus:ring-offset-2 ]
     ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
     ${className}
@@ -39,81 +39,18 @@ const CustomButton = ({
     >
       <span className={`absolute inset-0 bg-gradient-to-r [${colorClasses[color] || colorClasses.blue}]`}></span>
       <span className="absolute inset-0 bg-gradient-to-r from-black to-transparent opacity-50"></span>
-      <span className="relative flex items-center">
+      <span className="relative flex items-center z-10">
         <Icon className="w-5 h-5 mr-2 animate-pulse" />
         <span className="hidden md:inline">{title}</span>
         <span className="md:hidden">{mobileTitle}</span>
       </span>
       <span className="absolute inset-0  opacity-25 rounded-md"></span>
       <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12"></span>
-      <style jsx global>{`
-        .angular-cut {
-          position: relative;
-          clip-path: polygon(
-            0 0,
-            calc(100% - 10px) 0,
-            100% 10px,
-            100% 100%,
-            10px 100%,
-            0 calc(100% - 10px)
-          );
-        }
-        .angular-cut::before,
-        .angular-cut::after {
-          content: '';
-          position: absolute;
-          background-color: #374151;
-        }
-        .angular-cut::before {
-          top: 0;
-          right: 0;
-          width: 0px;
-          height: 0px;
-          transform: skew(-45deg);
-          transform-origin: top right;
-        }
-        .angular-cut::after {
-          bottom: 0;
-          left: 0;
-          width: 0px;
-          height: 0px;
-          transform: skew(-45deg);
-          transform-origin: bottom left;
-        }
-        .angular-cut-button {
-          position: relative;
-          clip-path: polygon(
-            0 0,
-            calc(100% - 10px) 0,
-            100% 10px,
-            100% 100%,
-            10px 100%,
-            0 calc(100% - 10px)
-          );
-        }
-        .angular-cut-button::before,
-        .angular-cut-button::after {
-          content: '';
-          position: absolute;
-          background-color: #78350f;
-        }
-        .angular-cut-button::before {
-          top: 0;
-          right: 0;
-          width: 0px;
-          height: 0px;
-          transform: skew(-45deg);
-          transform-origin: top right;
-        }
-        .angular-cut-button::after {
-          bottom: 0;
-          left: 0;
-          width: 0px;
-          height: 0px;
-          transform: skew(-45deg);
-          transform-origin: bottom left;
-        }
-      `}</style>
+      
+      {/* Updated hover transition element */}
+      <span className="absolute inset-0 bg-gradient-to-r from-transparent to-[#8a1b69] transition-all duration-300 ease-in-out transform -translate-x-full group-hover:translate-x-0"></span>
+
+    
     </button>
   );
 
